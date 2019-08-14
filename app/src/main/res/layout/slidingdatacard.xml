@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_usercardlayout"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:padding="10dp"
+    android:background="@color/white"
+    app:itemTextColor="@color/navigation_menu_item_color"
+    >
+
+
+
+
+    <ImageView
+        android:id="@+id/ziliao_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ziliao_background"
+        android:scaleType="fitXY"
+        />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/icon_image"
+        style="@style/ClickableImageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/image_id"
+        android:layout_centerInParent="true"
+
+        />
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="dujuan520@qq.com"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        />
+
+    <TextView
+        android:id="@+id/mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/username"
+        android:text="Jia"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/sil_moment"
+            android:icon="@drawable/moment"
+            android:title="瞬间"/>
+
+        <item
+            android:id="@+id/sil_friends"
+            android:icon="@drawable/friends"
+            android:title="狐朋狗友"/>
+
+        <item android:title="其他">
+            <menu>
+                <item
+                    android:id="@+id/sil_setting"
+                    android:icon="@drawable/setting"
+                    android:title="设置"/>
+            </menu>
+        </item>
+    </group>
+</menu>
