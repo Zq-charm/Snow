@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import Entity.Moment;
-import Utils.GlideUtil;
 
 import com.jon.snow.R;
 
@@ -41,14 +40,14 @@ public class MomentAdapter extends RecyclerView.Adapter<Adapters.MomentAdapter.V
             if(data.get(position).getImageId()!=0)
             {
 
-//                GlideUtil.load(holder.itemView.getContext(),data.get(position).getImageUrl(),holder.image,data.get(position).getImageId());
+
                 Glide.with(holder.itemView.getContext())
                         .load(data.get(position).getImageId())
                         .into(holder.image);
             }
             else
             {
-//                GlideUtil.load(holder.itemView.getContext(),data.get(position).getImageUrl(),holder.image,data.get(position).getImageId());
+//
                 Glide.with(holder.itemView.getContext())
                         .load(data.get(position).getImageUrl())
                         .into(holder.image);

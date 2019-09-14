@@ -5,15 +5,29 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.jon.snow"
-        minSdkVersion 18
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: "com.jon.snow",
+                JPUSH_APPKEY : "ea17aec446f3a55f0ccc6ac2", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+        ]
 
 
     }
+
+
 
     buildTypes {
         release {
@@ -62,4 +76,17 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.zhihu.android:matisse:0.5.2-beta2'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47'
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    implementation 'in.srain.cube:ultra-ptr:1.0.11'
+    implementation 'cn.jiguang.imui:chatinput:0.10.0'
+    implementation 'cn.jiguang.imui:messagelist:0.8.0'
+    implementation 'pub.devrel:easypermissions:0.4.0'
+
+    implementation 'com.tencent.imsdk:tuikit:4.4.900'
+    // api 'com.tencent.imsdk:imsdk:4.4.900'
+    implementation 'me.drakeet.multitype:multitype:3.4.4'
 }

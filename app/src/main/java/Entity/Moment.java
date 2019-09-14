@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Moment {
 
-    private String moment_id;
+    private int moment_id;
     private int moment_userface;
     private String moment_userface_url;
     private String imageUrl;
@@ -12,6 +12,12 @@ public class Moment {
     private String topic;
     private String picUrlList;
     private String userName;
+    private String user_id;
+    private int positionId;
+    private String moment_Text;
+    private int imageId;
+    private int star;
+    private int comment;
 
     public String getUserName() {
         return userName;
@@ -61,17 +67,16 @@ public class Moment {
         this.imageUrl = imageUrl;
     }
 
-    private int user_id;
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
-    private int positionId;
+
 
     public int getPositionId() {
         return positionId;
@@ -85,13 +90,8 @@ public class Moment {
         return moment_userface;
     }
 
-    public String getMoment_id() {
-        return moment_id;
-    }
 
-    private String moment_Text;
 
-    private int imageId;
 
     public int getStar() {
         return star;
@@ -101,13 +101,8 @@ public class Moment {
         return comment;
     }
 
-    private int star;
 
-    private int comment;
 
-    public void setMoment_id(String moment_id) {
-        this.moment_id = moment_id;
-    }
 
     public void setMoment_userface(int moment_userface) {
         this.moment_userface = moment_userface;
@@ -129,7 +124,7 @@ public class Moment {
         this.comment = comment;
     }
 
-    public Moment(String moment_Text,int ImageId,int Comment,int Star,String Moment_id,int Moment_userFace,int PositionId,int User_Id,String moment_userface_url,String imageUrl)
+    public Moment(String moment_Text,int ImageId,int Comment,int Star,int Moment_id,int Moment_userFace,int PositionId,String User_Id,String moment_userface_url,String imageUrl)
     {
         this.imageId = ImageId;
         this.moment_Text = moment_Text;
@@ -149,6 +144,14 @@ public class Moment {
 
     public int getImageId() {
         return imageId;
+    }
+
+    public int getMoment_id() {
+        return moment_id;
+    }
+
+    public void setMoment_id(int moment_id) {
+        this.moment_id = moment_id;
     }
 
     public Moment()

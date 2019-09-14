@@ -1,12 +1,14 @@
 package Entity;
 
-public class User
+import cn.jiguang.imui.commons.models.IUser;
+
+public class User implements IUser
 {
-    private int id; //用户id
+    private String id; //用户id  int
 
     private int imageId;  //用户头像
 
-    private String name;  //用户名
+    private String displayName;  //用户名
 
     private String password;//密码
 
@@ -32,20 +34,76 @@ public class User
 
     private int friendsNumber;  //朋友数
 
-    private String userfaceurl;//用户头像
+    private String avatar;//用户头像
 
-    public String getUserfaceurl() {
-        return userfaceurl;
+    private String nowLocation;//所在地
+
+    private String homeTown; //家乡
+
+    private String Emotion;//情感状态
+
+    private int Age;//年龄
+
+    private String backGround;//背景图
+
+    private String Sex; //性别
+
+    public String getSex() {
+        return Sex;
     }
 
-    public void setUserfaceurl(String userfaceurl) {
-        this.userfaceurl = userfaceurl;
+    public void setSex(String sex) {
+        Sex = sex;
     }
 
-    public User(int id, int imageId, String name, String passWord, String mail, int phone, String signaTure, int fansNumber, int followsPeopleNumber, int momentsNumber, int friendsNumber) {
+    public String getNowLocation() {
+        return nowLocation;
+    }
+
+    public void setNowLocation(String nowLocation) {
+        this.nowLocation = nowLocation;
+    }
+
+    public String getHomeTown() {
+        return homeTown;
+    }
+
+    public void setHomeTown(String homeTown) {
+        this.homeTown = homeTown;
+    }
+
+    public String getEmotion() {
+        return Emotion;
+    }
+
+    public void setEmotion(String emotion) {
+        Emotion = emotion;
+    }
+
+    public int getAge() {
+        return Age;
+    }
+
+    public void setAge(int age) {
+        Age = age;
+    }
+
+    public String getBackGround() {
+        return backGround;
+    }
+
+    public void setBackGround(String backGround) {
+        this.backGround = backGround;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public User(String id, int imageId, String DisplayName, String passWord, String mail, int phone, String signaTure, int fansNumber, int followsPeopleNumber, int momentsNumber, int friendsNumber) {
         this.id = id;
         this.imageId = imageId;
-        this.name = name;
+        this.displayName = DisplayName;
         this.mail = mail;
         this.phone = phone;
         this.signaTure = signaTure;
@@ -56,26 +114,22 @@ public class User
         this.password = passWord;
     }
 
+
+
     public User()
     {
 
     }
 
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
+
+
+
+    public void setDisplayName(String DisplayName) {
+        this.displayName = DisplayName;
     }
 
     public String getMail() {
@@ -150,4 +204,34 @@ public class User
         this.friendsNumber = friendsNumber;
     }
 
+
+    public User(String id, String displayName, String avatar) {
+        this.id = id;
+        this.displayName = displayName;
+        this.avatar = avatar;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    @Override
+    public String getAvatarFilePath() {
+        return avatar;
+    }
 }

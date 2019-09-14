@@ -43,7 +43,7 @@ import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CHOOSE = 23;
-
+    private static final int PERMISSIONS_REQUEST_CODE = 25;
     private String iv_userface_url;
     private ImageView iv_userface;
     private TextView tv_main_title;//标题
@@ -64,6 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         //设置此界面为竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        hasPermission();
         init();
     }
 
@@ -154,9 +155,9 @@ public class RegisterActivity extends AppCompatActivity {
                             .add("password",psw)
                             .build();
                     User user = new User();
-                    user.setName(userName);
+                    user.setDisplayName(userName);
                     user.setPassword(psw);
-                    user.setUserfaceurl(iv_userface_url);
+                    user.setAvatar(iv_userface_url);
                     Gson gson = new Gson();
                     String jsonObject = gson.toJson(user);
                     Log.d("UserJson","注册"+jsonObject);
@@ -245,5 +246,31 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 获取权限
+     * @return
+     */
+    private boolean hasPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CODE);
+            return false;
+        }else {
+            return true;
+        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case PERMISSIONS_REQUEST_CODE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "开启拍照权限陈工", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
 }

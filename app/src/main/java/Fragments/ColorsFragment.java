@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -98,7 +99,7 @@ public  class ColorsFragment extends Fragment implements DiscreteScrollView.OnIt
     private View view;
    // private List<Moment> moments;
     private HttpUtil httpUtil;
-
+    private Bitmap bitmap;
 
 
 
@@ -118,20 +119,11 @@ public  class ColorsFragment extends Fragment implements DiscreteScrollView.OnIt
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
 
-
-
        view =(LinearLayout) inflater.inflate(R.layout.colors_fragment,container,false);
         setHasOptionsMenu(true);
 
-
-
-
         bmb = (BoomMenuButton) view.findViewById(R.id.bmb_colors);
 
-
-        //        initRecyclerView();
-//
-//        initData();
         data = ((MainActivity)getActivity()).getMomentList();
         if (data.size()<=0)
         {
@@ -141,26 +133,9 @@ public  class ColorsFragment extends Fragment implements DiscreteScrollView.OnIt
     }
 
 
-
-
-
     private void initDiscreteScrollView()
     {
-//        data=new ArrayList<>();
-//        if (data==null)
-//        {
-//            initData();
-//            getHttpMoments();
-//        }
-//        else
-//        {
-//            getHttpMoments();
-//        }
-//        //访问获得
 
-      //  data = moment.getData();
-     //   DiscreteScrollView scrollView = (DiscreteScrollView)view.findViewById(R.id.moment_picker);
-       // scrollView.setAdapter(new MomentAdapter(getActivity(),data));
         currentMomentuserface=(ImageView)view.findViewById(R.id.moment_userface);
         currentMomentText = (TextView)view.findViewById(R.id.moment_text);
         currentMomentId = (TextView)view.findViewById(R.id.moment_id);
@@ -459,23 +434,55 @@ public  class ColorsFragment extends Fragment implements DiscreteScrollView.OnIt
         }
     }
     public Bitmap returnBitMap(String url)
-    {URL myFileUrl = null;
-    Bitmap bitmap = null;
+    {
+
+        URL myFileUrl = null;
+        bitmap = null;
+
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                Bitmap val = data.getParcelable("bitmap");
+                Log.i("mylog", "请求结果为-->" + val);
+                bitmap = val;
+            }
+        };
+
     try
     {
         myFileUrl = new URL(url);
     } catch (MalformedURLException e)
     {
         e.printStackTrace();
-    }try
-    {
-        HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-        conn.setDoInput(true);
-       conn.connect();
-       InputStream is = conn.getInputStream();
-       bitmap = BitmapFactory.decodeStream(is);
-      is.close();
-    } catch (IOException e)
+    }try {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL myFileUrl = null;
+                    Bitmap bitmap = null;
+                    HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(is);
+                    is.close();
+                    // TODO
+                    // 在这里进行 http request.网络请求相关操作
+                    Message msg = new Message();
+                    Bundle data = new Bundle();
+                    data.putParcelable("bitmap", bitmap);
+                    msg.setData(data);
+                    handler.sendMessage(msg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }catch (Exception e)
     {
         e.printStackTrace();
     }
@@ -485,16 +492,17 @@ public  class ColorsFragment extends Fragment implements DiscreteScrollView.OnIt
 
     private  void onMomentChanged(Moment moment)
     {
-        if (moment.getMoment_userface()!=0)
-        {
-            currentMomentuserface.setImageResource(moment.getMoment_userface());
-        } else
-        {
+//        if (moment.getMoment_userface()!=0)
+//        {
+//            currentMomentuserface.setImageResource(moment.getMoment_userface());
+//        } else
+//        {
 
             currentMomentuserface.setImageBitmap(returnBitMap(moment.getImageUrl()));
-        }
+//        }
+        Log.d("momentId",":"+moment.getMoment_id());
         currentMomentText.setText(moment.getMoment_Text());
-        currentMomentId.setText(moment.getMoment_id());
+        currentMomentId.setText(""+moment.getMoment_id());
         changeStarButtonState(moment);
     }
 

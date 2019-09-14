@@ -1,14 +1,24 @@
 package com.jon.snow;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.ParseException;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +32,8 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.http.AsyncHttpClient;
+import com.baidu.mapapi.http.HttpClient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhihu.matisse.Matisse;
@@ -29,18 +41,32 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Entity.Article;
 import Entity.Moment;
 import Entity.PicList;
 import Entity.User;
 import Utils.HttpUtil;
+import Utils.UploadUtil;
+import Utils.UploadUtils;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import okhttp3.internal.http2.Header;
 
 import static Utils.HttpUtil.JSON;
 
@@ -59,7 +85,10 @@ public class CreateMoment extends AppCompatActivity {
     public TextView loc;
     public TextView topic;
     public LinearLayout picGroup;
-    public List<String> picUrlList=new ArrayList<>(); //图片存放URLList
+    public List<Uri> picUrlList=new ArrayList<>(); //图片存放URLList
+    private String result;
+    public List<String>picUrIList=new ArrayList<>();
+    public String RequestURL = "http://49.232.63.6:8080/momentpics";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +131,7 @@ public class CreateMoment extends AppCompatActivity {
                     moment.setUserName(usrname);
 
                     System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
-                    HttpUtil.sendOkHttpRequest("http://http://49.232.63.6:8080/users/name/"+usrname, new Callback() {
+                    HttpUtil.sendOkHttpRequest("http://49.232.63.6:8080/users/name/"+usrname, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.d("失败","GET失败USER");
@@ -131,14 +160,66 @@ public class CreateMoment extends AppCompatActivity {
                     moment.setMoment_Text(writeMoment.getText().toString());
                     moment.setLocation(loc.getText().toString());
                     moment.setTopic(topic.getText().toString());
-                    Gson gson = new Gson(); //将图片URL转换为Json存储
-                    String json = gson.toJson(picUrlList);
-                    moment.setPicUrlList(json);
-                    moment.setImageUrl(picUrlList.get(0));
+//                    getRealPathFromURI(picUrlList.get(0));
+//                    Gson gson = new Gson(); //将图片URL转换为Json存储
+//                    String json = gson.toJson(picUrlList);
+                   // moment.setPicUrlList(json);
+                  //  moment.setImageUrl(picUrlList.get(0));
+                    int i=0;
+
+//                        for (String picUrI:picUrIList)
+//                    {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+//                                File file = new File(picUrI);
+                                result = UploadUtils.uploadFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),RequestURL);
+                            }
+                        }).start();
+                        if (result ==null)
+                        {
+                            Log.d("result", ":为空");
+                        }
+                        if (i==0&&result!=null)
+                        {
+                            moment.setImageUrl(result);
+                            Log.d("ImageUrl",":"+result);
+                        }
+                        i++;
+//                    }
+                    if (result!=null)
+                    {
+                        moment.setPicUrlList(result);
+                        Log.d("PicUrlList",":"+result);
+                    }
+//                    try {
+//                        Uri originalUri = data.getData(); // 获得图片的uri
+//
+//                        bm = MediaStore.Images.Media.getBitmap(resolver, originalUri); // 显得到bitmap图片
+//
+//                        // 这里开始的第二部分，获取图片的路径：
+//
+//                        String[] proj = { MediaStore.Images.Media.DATA };
+//
+//                        // 好像是android多媒体数据库的封装接口，具体的看Android文档
+//                        @SuppressWarnings("deprecation")
+//                        Cursor cursor = managedQuery(originalUri, proj, null, null, null);
+//                        // 按我个人理解 这个是获得用户选择的图片的索引值
+//                        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                        // 将光标移至开头 ，这个很重要，不小心很容易引起越界
+//                        cursor.moveToFirst();
+//                        // 最后根据索引值获取图片路径
+//                        String path = cursor.getString(column_index);
+//                        iv_photo.setImageURI(originalUri);
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
 
                     Gson gson1 = new Gson();
                     String jsonObject = gson1.toJson(moment);
-                    Log.d("createMomentJson","createMomJson错" + jsonObject);
+                    Log.d("createMomentJson","createMomJson" + jsonObject);
                     new Thread()
                     {
                         @Override
@@ -148,9 +229,10 @@ public class CreateMoment extends AppCompatActivity {
                             try
                             {
                                 System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
-                                HttpUtil.OkHttpRequestPost("http://http://49.232.63.6:8080/addmoment", jsonObject);
+                                HttpUtil.OkHttpRequestPost("http://49.232.63.6:8080/addmoment", jsonObject);
                             }catch (Exception e)
                             {
+                                Log.d("增加moment","失败");
                                 e.printStackTrace();
                             }
                         }
@@ -203,6 +285,7 @@ public class CreateMoment extends AppCompatActivity {
                     //请求码
                     .forResult(REQUEST_CODE_CHOOSE);
             }
+
         });
 
         addLoc.setOnClickListener(new View.OnClickListener() {
@@ -243,20 +326,46 @@ public class CreateMoment extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             List<Uri> result = Matisse.obtainResult(data);
-            picGroup.removeAllViews();
+            if (result.size() >= 9) {
+                picGroup.removeAllViews();
+            }
             for (int i = 0; i < result.size(); i++) {
                 ImageView imageView = new ImageView(this);
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));  //设置图片宽高
                 imageView.setImageURI(result.get(i));
                 picGroup.addView(imageView); //动态添加图片
-                picUrlList.add(result.get(i).toString());
-            }
+                //picUrlList.add(result.get(i).toString());
 
+                picUrIList.add(getRealPathFromURI(result.get(i)));
+                Log.d("picUrIList",":"+picUrIList.get(i));
+            }
         }
+    }
+
+    //uri以content开始,从uri获取文件路径
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(getApplicationContext(),
+                contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
 
 
-
+    /**
+     * 通过Base32将Bitmap转换成Base64字符串
+     * @param bit
+     * @return
+     */
+    public String Bitmap2StrByBase64(Bitmap bit){
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        bit.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩
+        byte[] bytes=bos.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
 
 }

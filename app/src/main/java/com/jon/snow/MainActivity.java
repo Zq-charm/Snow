@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -13,9 +17,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-
+import Fragments.*;
 
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +41,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,9 +51,7 @@ import java.util.List;
 import Entity.Moment;
 import Fragments.ColorsFragment;
 import Fragments.FollowFragment;
-import Fragments.FujinFragment;
-import Fragments.MyselfFragment;
-import Fragments.SettingFragment;
+
 import Utils.HttpUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -70,19 +76,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> titles ;
     private ArrayList<Fragment> fragments;
     private int[] Vp_icons={R.drawable.world_talk,R.drawable.fujin,R.drawable.follow,R.drawable.search};
-    //private int[][] subButtonColors={{-256,-20561},{-14336,-20561},{-65536,-20561}};
 
-
-
-//    private Moment[] moments = {new Moment("Happy",R.drawable.happy),new Moment("Sad",R.drawable.sad),
-//            new Moment("Lonly",R.drawable.lonly),new Moment("Angry",R.drawable.angry)};
-
-//    private List<Moment> momentList = new ArrayList<>();
-
-//    private MomentAdapter adapter;
 //
 //    private SwipeRefreshLayout swipeRefreshLayout; //下拉刷新逻辑
-
 
  //   private BottomNavigationView mBNB;
     @Override
@@ -92,14 +88,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            String FRAGMENTS_TAG = "android:support:fragments";
 //            savedInstanceState.remove(FRAGMENTS_TAG);
 //        }
+        closeAndroidPDialog();
         hasPermission();
         if (data==null)
         {
-            initData();
+            Log.d("初始化","准备初始化");
+         //   initData();
             getHttpMoments();
         }
         else
         {
+            Log.d("获取数据","开始读取");
+       //     initData();
             getHttpMoments();
         }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -215,10 +215,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initData()//模拟数据
     {
         List<Moment> list = Arrays.asList(
-                new Moment("This is moment", R.drawable.angry, 99, 520, "1", R.drawable.ic_useface_1, 0, 1,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_1","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/angry"),
-                new Moment("This is happy", R.drawable.happy, 98, 13, "2", R.drawable.ic_useface_2, 1, 1,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_2","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/happy"),
-                new Moment("This is lonly", R.drawable.lonly, 100, 14, "3", R.drawable.ic_useface_3, 2, 2,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_3","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/lonly"),
-                new Moment("This is qaq", R.drawable.sad, 10, 24, "4", R.drawable.ic_useface_4, 3, 4,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_4","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/sad")
+//                new Moment("This is moment", R.drawable.angry, 99, 520, "1", R.drawable.ic_useface_1, 0, 1,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_1","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/angry"),
+//                new Moment("This is happy", R.drawable.happy, 98, 13, "2", R.drawable.ic_useface_2, 1, 1,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_2","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/happy"),
+//                new Moment("This is lonly", R.drawable.lonly, 100, 14, "3", R.drawable.ic_useface_3, 2, 2,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_3","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/lonly"),
+//                new Moment("This is qaq", R.drawable.sad, 10, 24, "4", R.drawable.ic_useface_4, 3, 4,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_4","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/sad")
+                new Moment("This is moment", R.drawable.angry, 99, 520, 1, R.drawable.ic_useface_1, 0, "1","http://49.232.63.6:8080/momentpics/ic_useface_1.xml","http://49.232.63.6:8080/momentpics/angry.png"),
+                new Moment("This is happy", R.drawable.happy, 98, 13, 2, R.drawable.ic_useface_2, 1, "1","http://49.232.63.6:8080/momentpics/ic_useface_2.xml","http://49.232.63.6:8080/momentpics/happy.png"),
+                new Moment("This is lonly", R.drawable.lonly, 100, 14, 3, R.drawable.ic_useface_3, 2, "2","http://49.232.63.6:8080/momentpics/ic_useface_3.xml","http://49.232.63.6:8080/momentpics/lonly.png"),
+                new Moment("This is qaq", R.drawable.sad, 10, 24, 4, R.drawable.ic_useface_4, 3, "4","http://49.232.63.6:8080/momentpics/ic_useface_4.xml","http://49.232.63.6:8080/momentpics/sad.png")
         );
         for (int i = 0; i<list.size(); i++) {
             Gson gson = new Gson();
@@ -237,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }catch (Exception e)
                     {
                         e.printStackTrace();
+                        Log.d("MomentJson","Post错" + jsonObject);
                     }
                 }
             }.start();
@@ -311,6 +316,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragment = fragments.get(i);
             if (fragment != null && fragment.isAdded() && fragment.isVisible())
             {
+                if (i==0)//如果是首页，则刷新数据
+                {
+                    getHttpMoments();
+                }
                 break;
             }
         }
@@ -376,8 +385,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean hasPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CODE);
+                || ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+                ) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO}, PERMISSIONS_REQUEST_CODE);
             return false;
         }else {
             return true;
@@ -397,5 +408,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //uri以content开始,从uri获取文件路径
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(getApplicationContext(),
+                contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    //解决Detected problewm with API compatibility
+    private void closeAndroidPDialog(){
+        if (Build.VERSION.SDK_INT >= 28){
+
+            try {
+            Class aClass = Class.forName("android.content.pm.PackageParser$Package");
+            Constructor declaredConstructor = aClass.getDeclaredConstructor(String.class);
+            declaredConstructor.setAccessible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            Class cls = Class.forName("android.app.ActivityThread");
+            Method declaredMethod = cls.getDeclaredMethod("currentActivityThread");
+            declaredMethod.setAccessible(true);
+            Object activityThread = declaredMethod.invoke(null);
+            Field mHiddenApiWarningShown = cls.getDeclaredField("mHiddenApiWarningShown");
+            mHiddenApiWarningShown.setAccessible(true);
+            mHiddenApiWarningShown.setBoolean(activityThread, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        }
+    }
+
+    /**
+     * 反射 禁止弹窗
+     */
+    private void disableAPIDialog(){
+        if (Build.VERSION.SDK_INT < 28)return;
+        try {
+            Class clazz = Class.forName("android.app.ActivityThread");
+            Method currentActivityThread = clazz.getDeclaredMethod("currentActivityThread");
+            currentActivityThread.setAccessible(true);
+            Object activityThread = currentActivityThread.invoke(null);
+            Field mHiddenApiWarningShown = clazz.getDeclaredField("mHiddenApiWarningShown");
+            mHiddenApiWarningShown.setAccessible(true);
+            mHiddenApiWarningShown.setBoolean(activityThread, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

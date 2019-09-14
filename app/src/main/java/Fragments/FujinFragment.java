@@ -34,7 +34,7 @@ public  class FujinFragment extends Fragment
     private ViewPager viewPager;
     private Context context;
     private TabLayout tabLayout;
-    private String[] titles = {"推荐","关注","最新"};
+    private String[] titles = {"推荐","关注","附近"};
     private Toolbar mToolbar;
     @Nullable
     private AppCompatActivity mActivity;

@@ -49,11 +49,21 @@
                 />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-    <ImageView
+    <!--<ImageView-->
+        <!--android:id="@+id/moment_userface"-->
+        <!--style="@style/ClickableImageView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="start"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:padding="8dp"-->
+        <!--/>-->
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/moment_userface"
         style="@style/ClickableImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/image_id"
         android:layout_gravity="start"
         android:layout_margin="8dp"
         android:padding="8dp"
