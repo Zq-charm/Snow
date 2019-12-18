@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/friend_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/act_fake_tv0"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/act_fake_tv1"
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        ></TextView>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/act_face"
+        style="@style/ClickableImageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/image_id"
+        android:layout_below="@+id/act_fake_tv0"
+        android:layout_toRightOf="@+id/act_fake_tv1"
+        />
+
+    <TextView
+        android:id="@+id/act_fake_tv3"
+        android:layout_width="5dp"
+        android:layout_height="70dp"
+        android:layout_toRightOf="@+id/act_face"
+        ></TextView>
+    <TextView
+        android:id="@+id/act_title"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:text="打篮球在线约球啦啦啦"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@id/act_fake_tv3"
+        android:layout_below="@+id/act_fake_tv0"
+        >
+    </TextView>
+
+    <TextView
+        android:id="@+id/act_creatTime"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:text="2019/9/8 17:20"
+        android:textSize="10dp"
+        android:textColor="@color/gray"
+        android:layout_toRightOf="@id/act_fake_tv3"
+        android:layout_below="@id/act_title"
+        >
+    </TextView>
+
+    <TextView
+        android:id="@+id/act_id"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:text="ID:Stephten_curry"
+        android:textSize="10dp"
+        android:textColor="@color/gray"
+        android:layout_toRightOf="@id/act_fake_tv3"
+        android:layout_below="@id/act_creatTime">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/man"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_toRightOf="@id/act_title"
+        android:layout_below="@+id/act_fake_tv0"
+        android:src="@drawable/ic_man"
+        >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/woman"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_woman"
+        android:layout_toRightOf="@id/man"
+        android:layout_below="@+id/act_fake_tv0"
+        >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/act_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1.41km"
+        android:textSize="20dp"
+        android:textColor="@color/gray"
+        android:layout_below="@+id/act_fake_tv0"
+        android:layout_toRightOf="@id/woman">
+    </TextView>
+
+    <TextView
+        android:id="@+id/act_peopleNum"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="人数：5/10"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/act_title"
+        android:layout_alignParentRight="true"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/act_fake_tv2"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/act_face"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/act_cotent"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/act_fake_tv2"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="0dp"
+        android:layout_toRightOf="@+id/act_fake_tv1"
+        android:text="球场史蒂芬霍金在线约球，自带酒水，球已备好"
+        android:textSize="15dp"></TextView>
+
+    <ImageView
+        android:id="@+id/act_date_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_date1"
+        android:layout_below="@id/act_cotent"
+        android:layout_toRightOf="@+id/act_fake_tv1">
+        ></ImageView>
+
+    <TextView
+        android:id="@+id/act_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活动日期：2019/9/9 10:00am"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/act_cotent"
+        android:layout_toRightOf="@id/act_date_icon">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/act_location_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_icon_location"
+        android:layout_below="@id/act_date"
+        android:layout_toRightOf="@+id/act_fake_tv1">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/fake_textview_act_1"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@id/act_date"
+        android:layout_toRightOf="@id/act_location_icon"
+        />
+
+    <TextView
+        android:id="@+id/act_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="南京工程学院-江宁校区-东区篮球场"
+        android:layout_below="@id/fake_textview_act_1"
+        android:layout_toRightOf="@id/act_location_icon"
+        >
+    </TextView>
+
+    <TextView
+        android:id="@+id/fake_textview_act"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/act_location"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/gray"
+        android:layout_below="@id/act_location_icon"/>
+
+
+</RelativeLayout>

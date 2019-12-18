@@ -31,11 +31,13 @@ import android.widget.Toast;
 
 import Entity.Moment;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.jon.snow.AddActivity;
 import com.jon.snow.CreateMoment;
 import com.jon.snow.MainActivity;
 import com.jon.snow.MapLocationActivity;
@@ -128,6 +130,9 @@ public  class ColorsFragment extends Fragment implements DiscreteScrollView.OnIt
         if (data.size()<=0)
         {
             Log.d("错了","data没有传过对象");
+        }else
+        {
+            Log.d("首页data","="+data.get(0).getImageUrl());
         }
         return view;
     }
@@ -156,10 +161,10 @@ public  class ColorsFragment extends Fragment implements DiscreteScrollView.OnIt
                 .setMinScale(0.8f)
                 .build());
 
-        if (data.size()<=0)
-        {
-            Log.d("错了","data无对象");
-        }
+//        if (data.size()<=0)
+//        {
+//            Log.d("错了","data无对象");
+//        }
         onMomentChanged((Moment)data.get(0));
 
        // final LinearLayout linearLayout = (LinearLayout)getLayoutInflater().inflate(R.layout.colors_fragment,null);
@@ -287,6 +292,34 @@ public  class ColorsFragment extends Fragment implements DiscreteScrollView.OnIt
                             }
                         }
                         boomMenuButton.addBuilder(builder2);
+                        break;
+                    }
+                case 3:
+                    TextOutsideCircleButton.Builder builder3 = new TextOutsideCircleButton.Builder()
+                            .listener(new OnBMClickListener() {
+                                @Override
+                                public void onBoomButtonClick(int index) {
+                                    Toast.makeText(mActivity, "add act", Toast.LENGTH_SHORT).show();
+                                    Intent intent_act = new Intent(mActivity, AddActivity.class);
+                                    startActivity(intent_act);
+                                    boomMenuButton.clearBuilders();
+                                }
+                            }).normalText("发起活动")
+                            .normalImageRes(R.drawable.ic_match_friends);
+                    if (boomMenuButton.getBuilders().size()<=0)
+                    {
+                        boomMenuButton.addBuilder(builder3);
+                        break;
+                    }else
+                    {
+                        for (BoomButtonBuilder bbb :boomMenuButton.getBuilders())
+                        {
+                            if (bbb==builder3)
+                            {
+                                break;
+                            }
+                        }
+                        boomMenuButton.addBuilder(builder3);
                         break;
                     }
                 default:
@@ -492,15 +525,12 @@ public  class ColorsFragment extends Fragment implements DiscreteScrollView.OnIt
 
     private  void onMomentChanged(Moment moment)
     {
-//        if (moment.getMoment_userface()!=0)
-//        {
-//            currentMomentuserface.setImageResource(moment.getMoment_userface());
-//        } else
-//        {
 
-            currentMomentuserface.setImageBitmap(returnBitMap(moment.getImageUrl()));
-//        }
-        Log.d("momentId",":"+moment.getMoment_id());
+        Glide.with(getActivity().getApplicationContext())
+                .load(moment.getMoment_userface_url())
+                .into(currentMomentuserface);
+
+        Log.d("momentFaceImageUrl",":"+moment.getMoment_userface_url());
         currentMomentText.setText(moment.getMoment_Text());
         currentMomentId.setText(""+moment.getMoment_id());
         changeStarButtonState(moment);

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myself_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/myself_coordinatorlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+    >
+
+       <android.support.design.widget.AppBarLayout
+           android:id="@+id/myself_appBar"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:fitsSystemWindows="true"
+        >
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/myself_collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/myself_background"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                android:onClick="MyselfClick"
+                android:src="@drawable/curryface"
+                app:layout_collapseMode="parallax" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/myself_face"
+                style="@style/ClickableImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/image_id"
+                android:layout_marginTop="100dp"
+                android:layout_marginLeft="150dp"
+                />
+
+            <TextView
+                android:id="@+id/myself_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stephen_curry库里"
+                android:textSize="15dp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="140dp"
+                android:layout_marginTop="200dp"></TextView>
+
+            <TextView
+                android:id="@+id/myself_user_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关注：1"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:layout_marginLeft="140dp"
+                android:layout_below="@+id/myself_user_name"></TextView>
+
+            <TextView
+                android:id="@+id/myself_user_fenge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" | "
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:layout_toRightOf="@+id/myself_user_follow"
+                android:layout_below="@+id/myself_user_name"></TextView>
+
+                <TextView
+                    android:id="@+id/myself_user_fans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="粉丝：1999"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:layout_toRightOf="@+id/myself_user_fenge"
+                    android:layout_below="@+id/myself_user_name"></TextView>
+
+            </RelativeLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/myself_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+</android.support.design.widget.CoordinatorLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/myself_introduction_layout"
+        android:layout_below="@+id/myself_coordinatorlayout">
+
+
+        <TextView
+            android:id="@+id/myself_introduction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="个人简介"
+            android:textColor="@color/gray"
+            android:textSize="20dp"
+            android:textStyle="italic"></TextView>
+
+        <TextView
+            android:id="@+id/myself_stars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获赞：250"
+            android:textSize="15dp"
+            android:textColor="@color/gray"
+
+            android:layout_alignParentRight="true"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/fake_myself_tv_3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/myself_introduction"
+            ></TextView>
+
+        <ImageView
+            android:id="@+id/myself_sex_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/my_sex"
+            android:layout_below="@+id/fake_myself_tv_3">
+        </ImageView>
+
+
+        <TextView
+            android:id="@+id/myself_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="性别 :男"
+            android:textSize="15dp"
+            android:textColor="@color/gray"
+            android:layout_toRightOf="@+id/myself_sex_iv"
+            android:layout_below="@+id/fake_myself_tv_3"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/fake_myself_tv_4"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_below="@+id/myself_sex_iv"
+            ></TextView>
+
+        <ImageView
+            android:id="@+id/myself_age_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/my_age"
+            android:layout_below="@+id/fake_myself_tv_4"></ImageView>
+
+
+        <TextView
+            android:id="@+id/myself_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="年龄 :21"
+            android:textSize="15dp"
+            android:textColor="@color/gray"
+            android:layout_below="@+id/fake_myself_tv_4"
+            android:layout_toRightOf="@+id/myself_age_iv"
+            ></TextView>
+
+
+        <TextView
+            android:id="@+id/fake_myself_tv_0"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_below="@+id/myself_age_iv"
+            ></TextView>
+
+        <ImageView
+            android:id="@+id/myself_location_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/my_location"
+            android:layout_below="@+id/fake_myself_tv_0"></ImageView>
+
+
+        <TextView
+            android:id="@+id/myself_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="所在地 :江苏省南京市"
+            android:textSize="15dp"
+            android:textColor="@color/gray"
+            android:layout_below="@+id/fake_myself_tv_0"
+            android:layout_toRightOf="@+id/myself_location_iv"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/fake_myself_tv_1"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_below="@+id/myself_location"
+            ></TextView>
+
+        <ImageView
+            android:id="@+id/myself_home_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/my_home"
+            android:layout_below="@+id/fake_myself_tv_1"></ImageView>
+
+
+
+        <TextView
+            android:id="@+id/myself_hometown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="家乡 :内蒙古巴彦淖尔"
+            android:textColor="@color/gray"
+            android:textSize="15dp"
+            android:layout_below="@+id/fake_myself_tv_1"
+            android:layout_toRightOf="@+id/myself_home_iv"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/fake_myself_tv_2"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_below="@+id/myself_hometown"
+            ></TextView>
+
+        <ImageView
+            android:id="@+id/myself_emotion_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/my_emtion"
+            android:layout_below="@+id/fake_myself_tv_2">
+        </ImageView>
+
+
+        <TextView
+            android:id="@+id/myself_emotion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="情感状况 :已婚"
+            android:textSize="15dp"
+            android:textColor="@color/gray"
+            android:layout_toRightOf="@+id/myself_emotion_iv"
+            android:layout_below="@+id/fake_myself_tv_2"
+            ></TextView>
+
+
+    </RelativeLayout>
+</RelativeLayout>

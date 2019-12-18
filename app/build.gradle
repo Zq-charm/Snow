@@ -18,6 +18,7 @@ android {
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
 
+
         manifestPlaceholders = [
                 JPUSH_PKGNAME: "com.jon.snow",
                 JPUSH_APPKEY : "ea17aec446f3a55f0ccc6ac2", //JPush上注册的包名对应的appkey.
@@ -26,7 +27,6 @@ android {
 
 
     }
-
 
 
     buildTypes {
@@ -62,6 +62,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
+
+
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.jakewharton:butterknife:8.1.0'
@@ -74,7 +76,9 @@ dependencies {
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
     implementation 'com.squareup.okhttp3:okhttp:3.14.2'
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.zhihu.android:matisse:0.5.2-beta2'
+
+//    implementation  'com.zhihu.android:matisse:0.4.3'
+    implementation 'com.zhihu.android:matisse:0.5.0-alpha4'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47'
     implementation 'io.reactivex.rxjava2:rxjava:2.0.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -86,7 +90,8 @@ dependencies {
     implementation 'cn.jiguang.imui:messagelist:0.8.0'
     implementation 'pub.devrel:easypermissions:0.4.0'
 
-    implementation 'com.tencent.imsdk:tuikit:4.4.900'
-    // api 'com.tencent.imsdk:imsdk:4.4.900'
+    //implementation 'com.tencent.imsdk:tuikit:4.4.900'
+    //api 'com.tencent.imsdk:imsdk:4.4.900'
     implementation 'me.drakeet.multitype:multitype:3.4.4'
+    api 'com.tencent.imsdk:imsdk:4.5.111'
 }

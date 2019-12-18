@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="600dp"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    <ImageView
+        android:id="@+id/moment_iv"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:src="@drawable/curryface"
+        >
+    </ImageView>
+
+        <TextView
+            android:id="@+id/moment_fake_tv5"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/moment_iv"
+            android:layout_alignParentLeft="true"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/moment_fake_tv6"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_below="@+id/moment_iv"
+            android:layout_alignParentLeft="true"
+            ></TextView>
+        <ImageView
+            android:id="@+id/moment_star_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/star"
+            android:layout_toRightOf="@+id/moment_fake_tv5"
+            android:layout_below="@+id/moment_fake_tv6"></ImageView>
+
+        <TextView
+            android:id="@+id/moment_fake_tv0"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/moment_fake_tv6"
+            android:layout_toRightOf="@+id/moment_star_iv"
+            ></TextView>
+
+        <ImageView
+            android:id="@+id/moment_comment_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/commite"
+            android:layout_toRightOf="@+id/moment_fake_tv0"
+            android:layout_below="@+id/moment_fake_tv6"></ImageView>
+
+        <TextView
+            android:id="@+id/moment_fake_tv1"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/moment_fake_tv6"
+            android:layout_toRightOf="@+id/moment_comment_iv"
+            ></TextView>
+
+        <ImageView
+            android:id="@+id/moment_share_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/share"
+            android:layout_toRightOf="@+id/moment_fake_tv1"
+            android:layout_below="@+id/moment_fake_tv6"></ImageView>
+
+        <ImageView
+            android:id="@+id/moment_shouchang_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/shoucang"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/moment_fake_tv6"></ImageView>
+
+        <TextView
+            android:id="@+id/moment_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="user_name"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/moment_star_iv"
+            android:layout_toRightOf="@+id/moment_fake_tv5">
+        </TextView>
+        <TextView
+            android:id="@+id/moment_fake_tv7"
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/moment_shouchang_iv"
+            android:layout_toRightOf="@+id/moment_username"
+            ></TextView>
+        <TextView
+            android:id="@+id/moment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I can do all things!"
+            android:textSize="30dp"
+            android:textStyle="italic"
+            android:layout_below="@+id/moment_star_iv"
+            android:layout_toRightOf="@+id/moment_fake_tv7">
+        </TextView>
+
+        <TextView
+            android:id="@+id/moment_fake_tv8"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_below="@+id/moment_username"
+            android:layout_toRightOf="@+id/moment_fake_tv5"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/moment_createdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9月15日"
+            android:textSize="10dp"
+            android:textColor="@color/gray"
+            android:layout_below="@+id/moment_fake_tv8"
+            android:layout_toRightOf="@+id/moment_fake_tv5"></TextView>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

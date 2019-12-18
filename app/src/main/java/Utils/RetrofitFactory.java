@@ -19,7 +19,7 @@ public class   RetrofitFactory {
                 .writeTimeout(5, TimeUnit.SECONDS)
                 .build();
         Retrofit mRetrofit=new Retrofit.Builder()
-                .baseUrl("http://49.232.63.6:8080/")
+                .baseUrl("http://"+R.string.ip+":"+R.string.port+"/")
                 .addConverterFactory(GsonConverterFactory.create())//添加gson转换器
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//添加rxjava转换器
                 .client(mOkHttpClient)

@@ -10,6 +10,8 @@ public class User implements IUser
 
     private String displayName;  //用户名
 
+    private String name; //用户昵称
+
     private String password;//密码
 
     public String getPassword() {
@@ -40,20 +42,46 @@ public class User implements IUser
 
     private String homeTown; //家乡
 
-    private String Emotion;//情感状态
+    private String emotion;//情感状态
 
-    private int Age;//年龄
+    private int age;//年龄
 
     private String backGround;//背景图
 
-    private String Sex; //性别
+    private String sex; //性别
+
+    private long star;
+
+    public long getStar() {
+        return star;
+    }
+
+    public void setStar(long star) {
+        this.star = star;
+    }
+
+    public String getEmotion() {
+        return emotion;
+    }
+
+    public void setEmotion(String emotion) {
+        this.emotion = emotion;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     public String getSex() {
-        return Sex;
+        return sex;
     }
 
     public void setSex(String sex) {
-        Sex = sex;
+        this.sex = sex;
     }
 
     public String getNowLocation() {
@@ -72,21 +100,8 @@ public class User implements IUser
         this.homeTown = homeTown;
     }
 
-    public String getEmotion() {
-        return Emotion;
-    }
 
-    public void setEmotion(String emotion) {
-        Emotion = emotion;
-    }
 
-    public int getAge() {
-        return Age;
-    }
-
-    public void setAge(int age) {
-        Age = age;
-    }
 
     public String getBackGround() {
         return backGround;
@@ -100,10 +115,20 @@ public class User implements IUser
         this.avatar = avatar;
     }
 
-    public User(String id, int imageId, String DisplayName, String passWord, String mail, int phone, String signaTure, int fansNumber, int followsPeopleNumber, int momentsNumber, int friendsNumber) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public User(String id, int imageId, String displayName, String name, String password, String mail, int phone, String signaTure, int fansNumber, int followsPeopleNumber, int momentsNumber, int friendsNumber, String avatar, String nowLocation, String homeTown, String emotion, int age, String backGround, String sex, long star) {
         this.id = id;
         this.imageId = imageId;
-        this.displayName = DisplayName;
+        this.displayName = displayName;
+        this.name = name;
+        this.password = password;
         this.mail = mail;
         this.phone = phone;
         this.signaTure = signaTure;
@@ -111,16 +136,43 @@ public class User implements IUser
         this.followsPeopleNumber = followsPeopleNumber;
         this.momentsNumber = momentsNumber;
         this.friendsNumber = friendsNumber;
-        this.password = passWord;
+        this.avatar = avatar;
+        this.nowLocation = nowLocation;
+        this.homeTown = homeTown;
+        this.emotion = emotion;
+        this.age = age;
+        this.backGround = backGround;
+        this.sex = sex;
+        this.star = star;
     }
-
-
 
     public User()
     {
 
     }
 
+    public User(User user)
+    {
+        this.setName(user.getName());
+        this.setSex(user.getSex());
+        this.setNowLocation(user.getNowLocation());
+        this.setHomeTown(user.getHomeTown());
+        this.setEmotion(user.getEmotion());
+        this.setAge(user.getAge());
+        this.setFollowsPeopleNumber(user.getFollowsPeopleNumber());
+        this.setFansNumber(user.getFansNumber());
+        this.setDisplayName(user.getDisplayName());
+        this.setAvatar(user.getAvatar());
+        this.setBackGround(user.getBackGround());
+        this.setFriendsNumber(user.getFriendsNumber());
+        this.setId(user.getId());
+        this.setImageId(user.getImageId());
+        this.setMail(user.getMail());
+        this.setPassword(user.getPassword());
+        this.setMomentsNumber(user.getMomentsNumber());
+        this.setPhone(user.getPhone());
+        this.setSignaTure(user.getSignaTure());
+    }
 
 
 
@@ -148,13 +200,6 @@ public class User implements IUser
         this.phone = phone;
     }
 
-    public String getSignature() {
-        return signaTure;
-    }
-
-    public void setSignature(String signature) {
-        this.signaTure = signature;
-    }
 
     public int getImageId() {
         return imageId;

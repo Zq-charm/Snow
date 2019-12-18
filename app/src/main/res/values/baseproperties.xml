@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ip">127.0.0.1</string>
+    <string name="port">8080</string>
+    <string name="address">http://"+R.string.ip+":"+R.string.port+"/</string>
+
+</resources>

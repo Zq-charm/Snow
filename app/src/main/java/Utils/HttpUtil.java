@@ -54,7 +54,7 @@ public class HttpUtil
         });
     }
 
-    public static void OkHttpRequestGet(String address,Handler handler)
+    public static void OkHttpRequestGet(String address)
     {
         String result;
         OkHttpClient client = new OkHttpClient();

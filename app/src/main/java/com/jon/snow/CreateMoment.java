@@ -56,6 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Adapters.MyGlideEngine;
 import Entity.Article;
 import Entity.Moment;
 import Entity.PicList;
@@ -88,7 +89,7 @@ public class CreateMoment extends AppCompatActivity {
     public List<Uri> picUrlList=new ArrayList<>(); //图片存放URLList
     private String result;
     public List<String>picUrIList=new ArrayList<>();
-    public String RequestURL = "http://49.232.63.6:8080/momentpics";
+    public String RequestURL = "http://"+R.string.ip+":"+R.string.port+"/momentpics";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +132,7 @@ public class CreateMoment extends AppCompatActivity {
                     moment.setUserName(usrname);
 
                     System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
-                    HttpUtil.sendOkHttpRequest("http://49.232.63.6:8080/users/name/"+usrname, new Callback() {
+                    HttpUtil.sendOkHttpRequest("http://"+R.string.ip+":"+R.string.port+"/users/name/"+usrname, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.d("失败","GET失败USER");
@@ -229,7 +230,7 @@ public class CreateMoment extends AppCompatActivity {
                             try
                             {
                                 System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
-                                HttpUtil.OkHttpRequestPost("http://49.232.63.6:8080/addmoment", jsonObject);
+                                HttpUtil.OkHttpRequestPost("http://"+R.string.ip+":"+R.string.port+"/addmoment", jsonObject);
                             }catch (Exception e)
                             {
                                 Log.d("增加moment","失败");
@@ -261,29 +262,40 @@ public class CreateMoment extends AppCompatActivity {
         addPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Matisse
-                    .from(CreateMoment.this)
-                    //选择图片
-                    .choose(MimeType.ofImage())
-                    //是否只显示选择的类型的缩略图，就不会把所有图片视频都放在一起，而是需要什么展示什么
-                    .showSingleMediaType(true)
-                    //这两行要连用 是否在选择图片中展示照相 和适配安卓7.0 FileProvider
-                    .capture(true)
-                    .captureStrategy(new CaptureStrategy(true,"com.jon.snow.fileprovider"))
-                    //有序选择图片 123456...
-                    .countable(true)
-                    //最大选择数量为9
-                    .maxSelectable(9)
-                    //选择方向
-                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                    //界面中缩略图的质量
-                    .thumbnailScale(0.8f)
-                    //蓝色主题
-                    .theme(R.style.Matisse_Zhihu)
-                    //Glide加载方式
-                    .imageEngine(new GlideEngine())
-                    //请求码
-                    .forResult(REQUEST_CODE_CHOOSE);
+                Matisse.from(CreateMoment.this)
+                        .choose(MimeType.ofAll())//图片类型
+                        .countable(true)//true:选中后显示数字;false:选中后显示对号
+                        .maxSelectable(9)//可选的最大数
+                        .capture(true)//选择照片时，是否显示拍照
+                        .captureStrategy(new CaptureStrategy(true, "com.jon.snow.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                        .imageEngine(new MyGlideEngine())//图片加载引擎
+                        .forResult(REQUEST_CODE_CHOOSE);//
+
+
+
+//                Matisse
+//                    .from(CreateMoment.this)
+//                    //选择图片
+//                    .choose(MimeType.ofImage())
+//                    //是否只显示选择的类型的缩略图，就不会把所有图片视频都放在一起，而是需要什么展示什么
+//                    .showSingleMediaType(true)
+//                    //这两行要连用 是否在选择图片中展示照相 和适配安卓7.0 FileProvider
+//                    .capture(true)
+//                    .captureStrategy(new CaptureStrategy(true,"com.jon.snow.fileprovider"))
+//                    //有序选择图片 123456...
+//                    .countable(true)
+//                    //最大选择数量为9
+//                    .maxSelectable(9)
+//                    //选择方向
+//                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+//                    //界面中缩略图的质量
+//                    .thumbnailScale(0.8f)
+//                    //蓝色主题
+//                    .theme(R.style.Matisse_Zhihu)
+//                    //Glide加载方式
+//                    .imageEngine(new GlideEngine())
+//                    //请求码
+//                    .forResult(REQUEST_CODE_CHOOSE);
             }
 
         });

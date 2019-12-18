@@ -33,6 +33,7 @@ import java.io.IOError;
 import java.io.IOException;
 import java.util.List;
 
+import Adapters.MyGlideEngine;
 import Entity.User;
 import Utils.HttpUtil;
 import  Utils.MD5Utils;
@@ -85,31 +86,38 @@ public class RegisterActivity extends AppCompatActivity {
         iv_userface.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Matisse.from(RegisterActivity.this)
+                        .choose(MimeType.ofImage())//图片类型
+                        .countable(true)//true:选中后显示数字;false:选中后显示对号
+                        .maxSelectable(9)//可选的最大数
+                        .capture(true)//选择照片时，是否显示拍照
+                        .captureStrategy(new CaptureStrategy(true, "com.jon.snow.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                        .imageEngine(new MyGlideEngine())//图片加载引擎
+                        .forResult(REQUEST_CODE_CHOOSE);//
 
-
-                Matisse
-                        .from(RegisterActivity.this)
-                        //选择图片
-                        .choose(MimeType.ofImage())
-                        //是否只显示选择的类型的缩略图，就不会把所有图片视频都放在一起，而是需要什么展示什么
-                        .showSingleMediaType(true)
-                        //这两行要连用 是否在选择图片中展示照相 和适配安卓7.0 FileProvider
-                        .capture(true)
-                        .captureStrategy(new CaptureStrategy(true,"com.jon.snow.fileprovider"))
-                        //有序选择图片 123456...
-                        .countable(true)
-                        //最大选择数量为1
-                        .maxSelectable(1)
-                        //选择方向
-                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                        //界面中缩略图的质量
-                        .thumbnailScale(0.8f)
-                        //蓝色主题
-                        .theme(R.style.Matisse_Zhihu)
-                        //Glide加载方式
-                        .imageEngine(new GlideEngine())
-                        //请求码
-                        .forResult(REQUEST_CODE_CHOOSE);
+//                Matisse
+//                        .from(RegisterActivity.this)
+//                        //选择图片
+//                        .choose(MimeType.ofImage())
+//                        //是否只显示选择的类型的缩略图，就不会把所有图片视频都放在一起，而是需要什么展示什么
+//                        .showSingleMediaType(true)
+//                        //这两行要连用 是否在选择图片中展示照相 和适配安卓7.0 FileProvider
+//                        .capture(true)
+//                        .captureStrategy(new CaptureStrategy(true,"com.jon.snow.fileprovider"))
+//                        //有序选择图片 123456...
+//                        .countable(true)
+//                        //最大选择数量为1
+//                        .maxSelectable(1)
+//                        //选择方向
+//                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+//                        //界面中缩略图的质量
+//                        .thumbnailScale(0.8f)
+//                        //蓝色主题
+//                        .theme(R.style.Matisse_Zhihu)
+//                        //Glide加载方式
+//                        .imageEngine(new GlideEngine())
+//                        //请求码
+//                        .forResult(REQUEST_CODE_CHOOSE);
             }
         });
         tv_back.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
                             try
                             {
                                 System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
-                                httpUtil.OkHttpRequestPost("http://49.232.63.6:8080/users",jsonObject);
+                                httpUtil.OkHttpRequestPost("http://"+R.string.ip+":"+R.string.port+"/users",jsonObject);
                             }catch (Exception e)
                             {
                                 e.printStackTrace();
@@ -268,7 +276,7 @@ public class RegisterActivity extends AppCompatActivity {
             case PERMISSIONS_REQUEST_CODE:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "开启拍照权限陈工", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "开启拍照权限成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/friend_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/follow_fake_tv0"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/follow_fake_tv1"
+        android:layout_width="5dp"
+        android:layout_height="70dp"
+        ></TextView>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/friend_face"
+        style="@style/ClickableImageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/image_id"
+        android:layout_below="@+id/follow_fake_tv0"
+        android:layout_toRightOf="@+id/follow_fake_tv1"
+        />
+
+    <TextView
+        android:id="@+id/blank_text_one"
+        android:layout_width="wrap_content"
+        android:layout_height="4dp"
+        android:layout_toRightOf="@id/friend_face"
+        />
+
+
+    <TextView
+        android:id="@+id/friend_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="官方客服"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/blank_text_one"
+        android:layout_toRightOf="@id/follow_fake_tv2"
+        />
+    <TextView
+        android:id="@+id/follow_fake_tv2"
+        android:layout_width="5dp"
+        android:layout_height="70dp"
+        android:layout_toRightOf="@+id/friend_face"
+        ></TextView>
+    <TextView
+        android:id="@+id/blank_text"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/friend_name"
+        android:layout_height="4dp"
+        />
+
+    <TextView
+        android:id="@+id/blank_text_two"
+        android:layout_width="4dp"
+        android:layout_below="@id/friend_name"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/friend_face"
+        />
+    <TextView
+        android:id="@+id/friend_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="你好！"
+        android:textSize="15sp"
+        android:layout_below="@id/blank_text"
+        android:layout_toRightOf="@id/follow_fake_tv2"
+        />
+
+    <TextView
+        android:id="@+id/msg_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:text="时间2019"
+        android:textColor="@color/gray"
+        android:layout_below="@id/blank_text_one"
+        android:layout_alignParentRight="true"
+        />
+
+
+    <TextView
+        android:id="@+id/follow_fake_tv4"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/friend_face"
+        ></TextView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        android:layout_below="@id/follow_fake_tv4"
+        android:layout_alignParentLeft="true"
+        />
+</RelativeLayout>

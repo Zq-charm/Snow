@@ -39,10 +39,8 @@ public class MomentAdapter extends RecyclerView.Adapter<Adapters.MomentAdapter.V
         {
             if(data.get(position).getImageId()!=0)
             {
-
-
                 Glide.with(holder.itemView.getContext())
-                        .load(data.get(position).getImageId())
+                        .load(data.get(position).getImageUrl())
                         .into(holder.image);
             }
             else

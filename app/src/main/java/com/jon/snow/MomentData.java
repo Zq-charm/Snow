@@ -37,7 +37,7 @@ public class MomentData
     private  MomentData()
     {
 
-        storage = DemoApplication.getInstance().getSharedPreferences(STORAGE,Context.MODE_PRIVATE);
+        storage = App.getInstance().getSharedPreferences(STORAGE,Context.MODE_PRIVATE);
 
     }
 

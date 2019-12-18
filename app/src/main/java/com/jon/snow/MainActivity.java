@@ -1,13 +1,18 @@
 package com.jon.snow;
 
 import android.Manifest;
+import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -39,6 +45,21 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tencent.imsdk.TIMConnListener;
+import com.tencent.imsdk.TIMConversation;
+import com.tencent.imsdk.TIMGroupEventListener;
+import com.tencent.imsdk.TIMGroupTipsElem;
+import com.tencent.imsdk.TIMLogLevel;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageListener;
+import com.tencent.imsdk.TIMRefreshListener;
+import com.tencent.imsdk.TIMSdkConfig;
+import com.tencent.imsdk.TIMUserConfig;
+import com.tencent.imsdk.TIMUserStatusListener;
+import com.tencent.imsdk.ext.message.TIMMessageLocator;
+import com.tencent.imsdk.ext.message.TIMMessageRevokedListener;
+import com.tencent.imsdk.session.SessionWrapper;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -90,17 +111,96 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        }
         closeAndroidPDialog();
         hasPermission();
+        fullscreen(true);
+
+
+
         if (data==null)
         {
             Log.d("初始化","准备初始化");
          //   initData();
-            getHttpMoments();
+            Handler handler = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                switch (msg.what) {
+                    case 0:
+                        String momentJson = (String) msg.obj;
+                        Gson gson = new Gson();
+                        Moment moment = gson.fromJson(momentJson, Moment.class);
+                        Log.d("MomentJson:", momentJson);
+                        data.add(moment);
+                        if (data == null) {
+                            Log.d("data为null:在主线程", momentJson);
+                        }
+                        break;
+                    default:
+                            String momentJson1 = (String) msg.obj;
+                            Gson gson1 = new Gson();
+                            Moment moment1 = gson1.fromJson(momentJson1,Moment.class);
+                            Log.d("MomentJson:",momentJson1);
+                            data.add(moment1);
+                            if (data==null)
+                            {
+                                Log.d("data为null:在主线程default",momentJson1);
+                            }
+                            break;
+                }
+            }
+        };
+            getHttpMoments(handler);
         }
         else
         {
             Log.d("获取数据","开始读取");
        //     initData();
-            getHttpMoments();
+            Handler handler = new Handler()
+            {
+                public void handleMessage(Message msg)
+                {
+                    switch (msg.what) {
+                        case 0:
+                            Moment moment = (Moment) msg.obj;
+
+                            //Moment moment = gson.fromJson(momentJson, Moment.class);
+                            Log.d("Moment在handler中:", moment.getUser_id().toString());
+                            data.add(moment);
+                            if (data == null) {
+                                Log.d("data为null:在主线程","");
+                            }
+//                        SharedPreferences sp=getActivity().getSharedPreferences("MyselfJson",Context.MODE_MULTI_PROCESS);
+//                        //获取编辑器
+//                        SharedPreferences.Editor editor=sp.edit();
+//                        editor.putString("UserJson",userJson);
+//                        editor.commit();
+
+//                        Log.d("保存用户名密码成功 get user from back","succees");
+                            break;
+                        default:
+                            Moment moment1 = (Moment) msg.obj;
+                           // Gson gson1 = new Gson();
+                            //Moment moment1 = gson1.fromJson(momentJson1,Moment.class);
+                            Log.d("Moment在handler中:", moment1.getUser_id().toString());
+                            data.add(moment1);
+                            if (data==null)
+                            {
+                                Log.d("data为null:在主线程default","");
+                            }
+                            break;
+                    }
+                }
+            };
+            getHttpMoments(handler);
+        }
+        while (true)
+        {
+            if (data.isEmpty())
+            {
+
+            }else
+            {
+                break;
+            }
         }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
@@ -122,10 +222,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (NoScrollViewPager) findViewById(R.id.ViewPager);
-        fragments.add(new ColorsFragment());
-        fragments.add(new FujinFragment());
-        fragments.add(new FollowFragment());
-        fragments.add(new MyselfFragment());
+        mViewPager.setOffscreenPageLimit(4);
+
+        MyselfFragment myselfFragment = new MyselfFragment();
+        Intent intent = getIntent();
+
+        if("action".equals(intent.getAction())) {
+
+            String userName = intent.getStringExtra("userName");
+            String passWord = intent.getStringExtra("passWord");
+            Log.w("userName 在主线程 :", userName);
+            Log.w("passWord 在主线程:", passWord);
+            Bundle bundle=new Bundle();
+            bundle.putString("userName", userName);
+            bundle.putString("passWord", passWord);
+            myselfFragment.setArguments(bundle);
+            fragments.add(new ColorsFragment());
+            fragments.add(new FujinFragment());
+            fragments.add(new FollowFragment());
+            fragments.add(myselfFragment);
+        }else
+        {
+            fragments.add(new ColorsFragment());
+            fragments.add(new FujinFragment());
+            fragments.add(new FollowFragment());
+            fragments.add(new MyselfFragment());
+        }
 
 
         //访问获得
@@ -219,10 +341,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                new Moment("This is happy", R.drawable.happy, 98, 13, "2", R.drawable.ic_useface_2, 1, 1,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_2","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/happy"),
 //                new Moment("This is lonly", R.drawable.lonly, 100, 14, "3", R.drawable.ic_useface_3, 2, 2,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_3","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/lonly"),
 //                new Moment("This is qaq", R.drawable.sad, 10, 24, "4", R.drawable.ic_useface_4, 3, 4,"C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/ic_useface_4","C:/Users/JJJJ/AndroidStudioProjects/snow/app/src/main/res/drawable/sad")
-                new Moment("This is moment", R.drawable.angry, 99, 520, 1, R.drawable.ic_useface_1, 0, "1","http://49.232.63.6:8080/momentpics/ic_useface_1.xml","http://49.232.63.6:8080/momentpics/angry.png"),
-                new Moment("This is happy", R.drawable.happy, 98, 13, 2, R.drawable.ic_useface_2, 1, "1","http://49.232.63.6:8080/momentpics/ic_useface_2.xml","http://49.232.63.6:8080/momentpics/happy.png"),
-                new Moment("This is lonly", R.drawable.lonly, 100, 14, 3, R.drawable.ic_useface_3, 2, "2","http://49.232.63.6:8080/momentpics/ic_useface_3.xml","http://49.232.63.6:8080/momentpics/lonly.png"),
-                new Moment("This is qaq", R.drawable.sad, 10, 24, 4, R.drawable.ic_useface_4, 3, "4","http://49.232.63.6:8080/momentpics/ic_useface_4.xml","http://49.232.63.6:8080/momentpics/sad.png")
+                new Moment("This is moment", R.drawable.angry, 99, 520, 1, R.drawable.ic_useface_1, 0, "1","http://"+R.string.ip+":"+R.string.port+"/momentpics/ic_useface_1.xml","http://"+R.string.ip+":"+R.string.port+"/momentpics/angry.png"),
+                new Moment("This is happy", R.drawable.happy, 98, 13, 2, R.drawable.ic_useface_2, 1, "1","http://"+R.string.ip+":"+R.string.port+"/momentpics/ic_useface_2.xml","http://"+R.string.ip+":"+R.string.port+"/momentpics/happy.png"),
+                new Moment("This is lonly", R.drawable.lonly, 100, 14, 3, R.drawable.ic_useface_3, 2, "2","http://"+R.string.ip+":"+R.string.port+"/momentpics/ic_useface_3.xml","http://"+R.string.ip+":"+R.string.port+"/momentpics/lonly.png"),
+                new Moment("This is qaq", R.drawable.sad, 10, 24, 4, R.drawable.ic_useface_4, 3, "4","http://"+R.string.ip+":"+R.string.port+"/momentpics/ic_useface_4.xml","http://"+R.string.ip+":"+R.string.port+"/momentpics/sad.png")
         );
         for (int i = 0; i<list.size(); i++) {
             Gson gson = new Gson();
@@ -237,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     try
                     {
                         System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
-                        HttpUtil.OkHttpRequestPost("http://49.232.63.6:8080/addmoment", jsonObject);//"http://192.168.0.100:8080/addmoment"
+                        HttpUtil.OkHttpRequestPost("http://"+R.string.ip+":"+R.string.port+"/addmoment", jsonObject);//"http://192.168.0.100:8080/addmoment"
                     }catch (Exception e)
                     {
                         e.printStackTrace();
@@ -260,11 +382,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         this.data = data;
     }
-    private void getHttpMoments()
+    private void getHttpMoments(Handler handler)
     {
         // data= new ArrayList<>();
         System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
-        HttpUtil.sendOkHttpRequest("http://49.232.63.6:8080/moments", new Callback() {
+        HttpUtil.sendOkHttpRequest("http://"+R.string.ip+":"+R.string.port+"/moments", new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("失败","GET失败");
@@ -287,10 +409,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     Log.d("错了","GET时data无对象");
                 }
+                int i=0;
                 for(Moment moment:
                         data){
                     Log.e("Moment", "json数组: "+moment.getImageUrl());
+                    //Gson gson1 = new Gson();
+                    //String momentJson = gson1.toJson(moment);
+                    //Bundle bundle = new Bundle();
+                    //bundle.putString("moment"+i,momentJson);
+                    Message message = new Message();
+                    message.what=i;
+                    message.obj = moment;
+                    handler.sendMessage(message);
                 }
+
 
             }
         });
@@ -318,7 +450,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 if (i==0)//如果是首页，则刷新数据
                 {
-                    getHttpMoments();
+                    Handler handler = new Handler()
+                    {
+                        public void handleMessage(Message msg)
+                        {
+                            switch (msg.what) {
+                                case 0:
+                                    Moment moment = (Moment) msg.obj;
+
+                                    //Moment moment = gson.fromJson(momentJson, Moment.class);
+                                    Log.d("Moment:", moment.toString());
+                                    data.add(moment);
+                                    if (data == null) {
+                                        Log.d("data为null:在主线程","");
+                                    }
+//                        SharedPreferences sp=getActivity().getSharedPreferences("MyselfJson",Context.MODE_MULTI_PROCESS);
+//                        //获取编辑器
+//                        SharedPreferences.Editor editor=sp.edit();
+//                        editor.putString("UserJson",userJson);
+//                        editor.commit();
+
+//                        Log.d("保存用户名密码成功 get user from back","succees");
+                                    break;
+                                default:
+                                    Moment moment1 = (Moment) msg.obj;
+                                    // Gson gson1 = new Gson();
+                                    //Moment moment1 = gson1.fromJson(momentJson1,Moment.class);
+                                    Log.d("Moment:",moment1.toString());
+                                    data.add(moment1);
+                                    if (data==null)
+                                    {
+                                        Log.d("data为null:在主线程default","");
+                                    }
+                                    break;
+                            }
+                        }
+                    };
+                    getHttpMoments(handler);
                 }
                 break;
             }
@@ -462,5 +630,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
+
+    private void fullscreen(boolean enable) {
+
+        if (enable) { //显示状态栏
+
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+
+        lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+
+        getWindow().setAttributes(lp);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+            } else { //隐藏状态栏
+
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+
+                lp.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+                getWindow().setAttributes(lp);
+
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+         }
+
+        }
+
 
 }

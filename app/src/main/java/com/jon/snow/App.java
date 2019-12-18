@@ -2,6 +2,7 @@ package com.jon.snow;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 
 import java.lang.reflect.Constructor;
@@ -11,7 +12,7 @@ import java.lang.reflect.Method;
 public class App extends Application {
 
     private static App instance;
-
+    private static Context mContext;
     public static App getInstance() {
         return instance;
     }
@@ -23,6 +24,7 @@ public class App extends Application {
         closeAndroidPDialog();
         instance = this;
         DiscreteScrollViewOptions.init(this);
+        mContext = getApplicationContext();
     }
 
 
@@ -64,6 +66,11 @@ public class App extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //创建一个静态的方法，以便获取context对象
+    public static Context getContext(){
+        return mContext;
     }
 
 }
